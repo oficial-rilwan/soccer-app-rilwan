@@ -2,7 +2,7 @@ import React from "react";
 import { Col } from "react-bootstrap";
 
 const SingleTeam = ({ item }) => {
-  let date = new Date(item.utcDate).getDay();
+  let date = new Date(item.utcDate).getDate();
   let month = new Date(item.utcDate).getMonth();
   let time = new Date(item.utcDate).getHours();
   let minute = new Date(item.utcDate).getMinutes();
