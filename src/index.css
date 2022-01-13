@@ -67,6 +67,9 @@ h4 {
   padding-bottom: 0.5rem;
   cursor: pointer;
 }
+.standings-badge span:hover {
+  border-bottom: 3px solid #fff;
+}
 .span-border {
   border-bottom: 3px solid #fff;
 }

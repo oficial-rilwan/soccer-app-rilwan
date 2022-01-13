@@ -5,7 +5,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import LeagueTable from "../components/league-table/LeagueTable";
-import ChampionsLeague from "./ChampionsLeague";
 import SingleTeam from "./SingleTeam";
 import Footer from "../components/footer/Footer";
 
@@ -40,7 +39,7 @@ const Team = () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `http://api.football-data.org/v2/competitions/${id}/standings`,
+        `https://api.football-data.org/v2/competitions/${id}/standings`,
         {
           headers: {
             "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
@@ -48,7 +47,7 @@ const Team = () => {
         }
       );
       setLoading(false);
-      setMatchDay(data.season?.currentMatchday);
+      setMatchDay(data.season.currentMatchday);
       setStandings(data.standings[0].table);
       setCompetition(data.competition);
       setPre(data.standings[0]?.table);
@@ -71,7 +70,7 @@ const Team = () => {
   const fetchMatches = async () => {
     try {
       const { data } = await axios.get(
-        `http://api.football-data.org/v2/competitions/${id}/matches?matchday=${matchDay}`,
+        `https://api.football-data.org/v2/competitions/${id}/matches?matchday=${matchDay}`,
         {
           headers: {
             "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",

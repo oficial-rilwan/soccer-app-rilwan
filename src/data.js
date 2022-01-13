@@ -7,12 +7,6 @@ const data = [
     country: "Europe",
   },
   {
-    id: "2146",
-    name: "Uefa Europa League",
-    image: "https://crests.football-data.org/EUR.svg",
-    country: "Europe",
-  },
-  {
     id: "2021",
     name: "Premier League",
     image: "https://sportify-git-master.itope84.vercel.app/img/PL.274c4545.png",
@@ -37,6 +31,12 @@ const data = [
     image:
       "https://sportify-git-master.itope84.vercel.app/img/BL1.7a2c67c2.png",
     country: "Germany",
+  },
+  {
+    id: "2146",
+    name: "Uefa Europa League",
+    image: "https://crests.football-data.org/EUR.svg",
+    country: "Europe",
   },
   {
     id: "2019",
