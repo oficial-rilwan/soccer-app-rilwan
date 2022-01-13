@@ -16,33 +16,29 @@ const Competitions = () => {
       </div>
       <div className="competitions-list">
         <Container fluid="xl" className="p-0">
-          <Row className="justify-content-center align-items-center">
-            <Col className="competitions-col">
-              <div className="competitions-wrapper">
-                <h2 className="mb-3">All Competitions</h2>
-                <Row className="justify-content-center g-4">
-                  {data.map((competition) => {
-                    return (
-                      <Col
-                        className="bt-col"
-                        key={competition.id}
-                        sm={6}
-                        onClick={() => history.push(`/${competition.id}`)}
-                      >
-                        <div className="competition">
-                          <img src={competition.image} alt={competition.name} />
-                          <div className="competition-info">
-                            <h4>{competition.name}</h4>
-                            <p>{competition.country}</p>
-                          </div>
-                        </div>
-                      </Col>
-                    );
-                  })}
-                </Row>
-              </div>
-            </Col>
-          </Row>
+          <div className="competitions-wrapper">
+            <h2 className="mb-3">All Competitions</h2>
+            <Row className="justify-content-center g-4">
+              {data.map((competition) => {
+                return (
+                  <Col
+                    className="bt-col"
+                    key={competition.id}
+                    sm={6}
+                    onClick={() => history.push(`/${competition.id}`)}
+                  >
+                    <div className="competition">
+                      <img src={competition.image} alt={competition.name} />
+                      <div className="competition-info">
+                        <h4>{competition.name}</h4>
+                        <p>{competition.country}</p>
+                      </div>
+                    </div>
+                  </Col>
+                );
+              })}
+            </Row>
+          </div>
         </Container>
       </div>
     </div>
