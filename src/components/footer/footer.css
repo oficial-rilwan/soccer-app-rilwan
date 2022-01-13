@@ -1,0 +1,27 @@
+.footer-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.footer-wrapper .name {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #555;
+}
+.footer-wrapper .name span {
+  border-bottom: 2px solid #007bff;
+  color: #111;
+  margin-left: 0.25rem;
+}
+.footer-wrapper .credits {
+  margin-bottom: 0.25rem;
+  font-size: 14px;
+}
+.footer-wrapper .credits span {
+  border-bottom: 2px solid #007bff;
+  color: #111;
+  margin-left: 0.25rem;
+}
