@@ -154,32 +154,38 @@ const Team = () => {
                       />
                     </div>
                   ) : (
-                    <table className="table table-borderless">
+                    <>
                       {id !== "2001" && (
-                        <thead>
-                          <tr className="table-head-row">
-                            <th scope="col"></th>
-                            <th className="team-col" scope="col">
-                              Team
-                            </th>
-                            <th scope="col">MP</th>
-                            <th scope="col">W</th>
-                            <th scope="col">D</th>
-                            <th scope="col">L</th>
-                            <th scope="col">GF</th>
-                            <th scope="col">GA</th>
-                            <th scope="col">Pts</th>
-                          </tr>
-                        </thead>
+                        <div className="cl-table-wrapper">
+                          <table className="table table-borderless">
+                            <thead>
+                              <tr className="table-head-row">
+                                <th scope="col"></th>
+                                <th className="team-col" scope="col">
+                                  Team
+                                </th>
+                                <th scope="col">MP</th>
+                                <th scope="col">W</th>
+                                <th scope="col">D</th>
+                                <th scope="col">L</th>
+                                <th scope="col">GF</th>
+                                <th scope="col">GA</th>
+                                <th scope="col">Pts</th>
+                              </tr>
+                            </thead>
+                            <>
+                              <tbody>
+                                {standings.map((item, i) => {
+                                  return (
+                                    <LeagueTable item={item} key={i} i={i} />
+                                  );
+                                })}
+                              </tbody>
+                            </>
+                          </table>
+                        </div>
                       )}
-                      <>
-                        <tbody>
-                          {standings.map((item, i) => {
-                            return <LeagueTable item={item} key={i} i={i} />;
-                          })}
-                        </tbody>
-                      </>
-                    </table>
+                    </>
                   )}
                 </div>
 

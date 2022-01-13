@@ -1,14 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap");
+
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
+
   overflow-x: hidden;
 }
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 600;
-}
+
 /* Teams Page */
 .teams-standings .banner {
   background: url("https://images.pexels.com/photos/47354/the-ball-stadion-football-the-pitch-47354.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
@@ -21,7 +18,7 @@ h4 {
   align-items: flex-end;
 }
 .team-wrapper {
-  padding: 1rem;
+  padding: 0.5rem;
   border: 1px solid #ccc;
   background-color: #fff;
   margin-top: -3rem;
@@ -33,9 +30,16 @@ h4 {
 
 .team-header {
   color: #777;
-  font-weight: 400;
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+@media (min-width: 728px) {
+  .team-header {
+    font-size: 1.2rem;
+  }
 }
 .team-header span {
   margin-right: 0.5rem;
@@ -47,8 +51,10 @@ h4 {
 
 .header h2 {
   color: #007bff;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 1.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 .standings-badge {
   display: flex;
@@ -60,11 +66,16 @@ h4 {
   padding-right: -1rem;
 }
 .standings-badge span {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 400;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   cursor: pointer;
+}
+@media (min-width: 728px) {
+  .standings-badge span {
+    font-size: 1.2rem;
+  }
 }
 .standings-badge span:hover {
   border-bottom: 3px solid #fff;
@@ -172,13 +183,22 @@ h4 {
   -moz-box-shadow: -1px 3px 9px 1px rgba(201, 201, 201, 0.75);
   padding: 1rem;
   margin-bottom: 2rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
   overflow-x: auto;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 .cl-table-wrapper h4 {
   font-weight: 400;
   margin-bottom: 2rem;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+@media (min-width: 728px) {
+  .cl-table-wrapper h4 {
+    font-size: 1.4rem;
+  }
 }
 .loading-spin {
   width: 100%;

@@ -59,8 +59,8 @@
 .competition .competition-info h4 {
   /* color: #555; */
   margin-bottom: 0;
-  font-weight: 400;
-  font-size: 1.5rem;
+  font-weight: 500;
+  font-size: 1.2rem;
 }
 .competition .competition-info p {
   margin-bottom: 0;
@@ -68,4 +68,9 @@
 }
 .bt-col {
   display: flex;
+}
+@media (min-width: 728px) {
+  .competition .competition-info h4 {
+    font-size: 1.4rem;
+  }
 }
