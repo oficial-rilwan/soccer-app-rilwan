@@ -12,7 +12,7 @@ const Competitions = () => {
   const fetchCompetitions = async () => {
     setLoading(true);
     const { data } = await axios.get(
-      `http://api.football-data.org/v2/competitions?plan=TIER_ONE`,
+      `https://api.football-data.org/v2/competitions?plan=TIER_ONE`,
       {
         headers: {
           "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
