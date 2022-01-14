@@ -1,19 +1,20 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-import { Col, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import LeagueTable from "../components/league-table/LeagueTable";
 import SingleTeam from "./SingleTeam";
 import Footer from "../components/footer/Footer";
+import { useLocation } from "react-router-dom";
 
 const Team = () => {
   const [standings, setStandings] = useState([]);
   const [competition, setCompetition] = useState([]);
   const [matches, setMatches] = useState([]);
   const [leagueTable, setTable] = useState(true);
-  const [matchDay, setMatchDay] = useState(1);
+  // const [matchDay, setMatchDay] = useState(1);
   const [match, setMatch] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -32,63 +33,58 @@ const Team = () => {
   const [final, setFinal] = useState([]);
   // const [] = useState([])
 
-  const { id } = useParams();
+  const query = new URLSearchParams(useLocation().search);
+  const id = query.get("id");
+  const matchDay = query.get("matchday");
+
   const history = useHistory();
 
   const fetchStandings = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `https://api.football-data.org/v2/competitions/${id}/standings`,
-        {
-          headers: {
-            "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
-          },
-        }
-      );
-      setLoading(false);
-      setMatchDay(data.season.currentMatchday);
-      setStandings(data.standings[0].table);
-      setCompetition(data.competition);
-      setPre(data.standings[0]?.table);
-      setQualification(data.standings[1]?.table);
-      setGA(data.standings[2]?.table);
-      setGB(data.standings[3]?.table);
-      setGC(data.standings[4]?.table);
-      setGD(data.standings[5]?.table);
-      setGE(data.standings[6]?.table);
-      setGF(data.standings[7]?.table);
-      setGG(data.standings[8]?.table);
-      setGH(data.standings[9]?.table);
-      setFinal(data.standings[10]?.table);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
+    setLoading(true);
+    const { data } = await axios.get(
+      `https://api.football-data.org/v2/competitions/${id}/standings`,
+      {
+        headers: {
+          "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
+          "X-Response-Control": "full",
+        },
+      }
+    );
+    setLoading(false);
+    // setMatchDay(data.season.currentMatchday);
+    setStandings(data.standings[0].table);
+    setCompetition(data.competition);
+    setPre(data.standings[0]?.table);
+    setQualification(data.standings[1]?.table);
+    setGA(data.standings[2]?.table);
+    setGB(data.standings[3]?.table);
+    setGC(data.standings[4]?.table);
+    setGD(data.standings[5]?.table);
+    setGE(data.standings[6]?.table);
+    setGF(data.standings[7]?.table);
+    setGG(data.standings[8]?.table);
+    setGH(data.standings[9]?.table);
+    setFinal(data.standings[10]?.table);
   };
 
   const fetchMatches = async () => {
-    try {
-      const { data } = await axios.get(
-        `https://api.football-data.org/v2/competitions/${id}/matches?matchday=${matchDay}`,
-        {
-          headers: {
-            "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
-          },
-        }
-      );
+    const { data } = await axios.get(
+      `https://api.football-data.org/v2/competitions/${id}/matches?matchday=${matchDay}`,
+      {
+        headers: {
+          "X-Auth-Token": "c456c5babe9d4669903df726010bf7e6",
+        },
+      }
+    );
 
-      setMatches(data.matches);
-    } catch (error) {
-      console.log(error);
-    }
+    setMatches(data.matches);
   };
 
   useEffect(() => {
     fetchStandings();
     fetchMatches();
     // eslint-disable-next-line
-  }, [matchDay]);
+  }, []);
 
   const handleMatches = () => {
     if (leagueTable) {
