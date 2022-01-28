@@ -1,0 +1,9 @@
+.sample:after {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  color: rgb(105, 105, 222);
+  width: 7rem;
+  content: '—';
+}

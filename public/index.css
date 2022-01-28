@@ -1,0 +1,6 @@
+#root {
+  height: 100vh;
+  background-color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+}

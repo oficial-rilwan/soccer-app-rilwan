@@ -1,0 +1,732 @@
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import {
+  Dialog,
+  IconButton,
+  InputAdornment,
+  ListSubheader,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+  useMediaQuery,
+  Paper,
+} from '@material-ui/core';
+import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
+import { Close, SearchOutlined } from '@material-ui/icons';
+import { MaterialDatePicker } from 'modules/components/DatePickers/Date';
+import { TypographyH5 } from 'modules/components/Typography/Typography';
+import InputForEmployeePage from 'modules/HumanResources/Employees/AddEmployees/components/EmployeeInpt';
+import InputField from 'modules/HumanResources/Employees/AddEmployees/components/EmployeeInpt';
+import { PrimaryButton } from 'modules/components/Buttons/Defaults';
+import { DefaultButton } from 'modules/components/Buttons/Defaults';
+import { useEffect, useState } from 'react';
+import { authClient } from 'modules/authentication/requestClient';
+import { TypographyBold } from 'modules/components/Typography/Typography';
+import AccountSelect from '../../../inflow/AccountSelect';
+import Lottie from 'react-lottie';
+import animationData from 'modules/animations/mail.json';
+import { DialogTypography } from 'modules/components/Typography/Typography';
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    borderRadius: '5px',
+    backgroundColor: '#EEF5FC',
+    padding: '1rem',
+    borderRadius: '5px',
+    border: '1px solid #DFDFDF',
+    flexGrow: 1,
+    marginBottom: '4rem',
+    marginTop: '1rem',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  dialogSuccess: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    height: '90%',
+  },
+  stickyHeader: { backgroundColor: 'transparent' },
+  tableWrapper: {
+    border: '1px solid #DFDFDF',
+    backgroundColor: '#FCFFFF',
+    padding: '.6rem',
+    borderRadius: '5px',
+    marginTop: '1.2rem',
+    marginBottom: '2rem',
+  },
+  tableContainer: {
+    overflowX: 'auto',
+    '&::-webkit-scrollbar-track': {
+      webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.3)',
+      borderRadius: '10px',
+      backgroundColor: '#F5F5F5',
+      height: '5px',
+    },
+    '&::-webkit-scrollbar': {
+      width: '12px',
+      backgroundColor: '#F5F5F5',
+      height: '8px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: '10px',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, .3)',
+      backgroundColor: '#5559',
+    },
+  },
+  dialogContainer: {
+    backgroundColor: '#f7fbfe61',
+  },
+  container: { marginBottom: '17px !important' },
+  dialogPaper: {
+    width: '36rem',
+    height: '36rem',
+    borderRadius: 10,
+    border: '0.5px solid #878181',
+  },
+  large: {
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+  },
+  inputAdornment: {
+    color: '#878181',
+  },
+  required: {
+    position: 'relative',
+    top: '3px',
+    left: '4px',
+    color: '#f04b4b',
+  },
+  cellWrapper: {
+    backgroundColor: '#fcffff',
+    color: '#474747',
+  },
+  dialogContent: {
+    marginTop: '4rem',
+    fontFamily: 'Rubik',
+    fontSize: 14,
+  },
+  formTitle: {
+    fontFamily: 'Rubik, sans-serif',
+    fontWeight: 'normal',
+    fontSize: '15px',
+    lineHeight: '19px',
+    /* identical to box height */
+    color: '#010A1B',
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+    },
+  },
+  formFieldWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '.7rem',
+      justifyContent: 'flex-start',
+    },
+  },
+  selectInput: {
+    height: 42,
+    '& .MuiOutlinedInput-notchedOutline': {
+      borderColor: '#F5F6F8',
+    },
+    '& :focus': {
+      backgroundColor: 'transparent',
+    },
+  },
+  select: {
+    padding: 12,
+  },
+  selectRoot: {
+    height: '30rem',
+  },
+  tableRow: {
+    '&:last-child th, &:last-child td': {
+      borderBottom: 0,
+    },
+  },
+  deleteBtn: {
+    borderRadius: '3px',
+    backgroundColor: '#EB5757',
+    color: '#fff',
+    textTransform: 'none',
+    width: '7rem',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+    fontWeight: 500,
+    fontFamily: 'Rubik',
+    '&:hover': {
+      backgroundColor: '#EB5757',
+    },
+  },
+  cancelBtn: {
+    borderRadius: '3px',
+    border: '1px solid #00000033',
+    backgroundColor: 'transparent',
+    textTransform: 'none',
+    fontWeight: 500,
+    fontFamily: 'Rubik',
+    width: '7rem',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+    boxShadow: 'none',
+  },
+}));
+
+const defaultOptions = {
+  loop: false,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
+
+const DialogTitle = withStyles(styles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography
+        variant="h6"
+        style={{
+          fontFamily: 'Rubik',
+          fontWeight: 500,
+          fontSize: '19.6787px',
+          lineHeight: '20px',
+          marginTop: '1rem',
+        }}>
+        {children}
+      </Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}>
+          <Close />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: '16px 65px 16px 16px',
+  },
+}))(MuiDialogContent);
+
+const CssTextField = withStyles({
+  root: {
+    fontStyle: 'italic',
+    fontFamily: 'Rubik,sans-serif',
+    backgroundColor: '#fff',
+    '& input + fieldset': {
+      borderColor: '#ced4da',
+    },
+  },
+})(TextField);
+
+const accountType = [
+  {
+    title: 'Income account',
+    children: [
+      ' Gain on foreign exchange',
+      'Sales',
+      'Uncategorised income ',
+      'Discount ',
+    ],
+  },
+  {
+    title: 'Asset account',
+    children: [' Account receivables ', ' Opening stock '],
+  },
+  {
+    title: 'Liability account',
+    children: [' Account payable', ' Wages payable'],
+  },
+  {
+    title: 'Equity Account',
+    children: ["Owner's investment and withdrawal", "Owner's equity "],
+  },
+];
+
+const paymentType = ['Cash', 'Cheque', 'Bank Transfers', 'Others'];
+
+const AddTransactionDialog = ({ open, handleDialogClose, amount }) => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
+  const tabUp = useMediaQuery(theme.breakpoints.up(768));
+  const [data, setData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState([]);
+  const [success, setSuccess] = useState(false);
+
+  const [values, setValues] = useState({
+    date: '',
+    amount: '',
+    debitAccountType: {
+      code: '',
+      id: '',
+      name: '',
+    },
+    creditAccountType: {
+      code: '',
+      id: '',
+      name: '',
+    },
+    recipient: {
+      type: 'customer',
+      id: '',
+      name: '',
+    },
+    description: '',
+    paymentType: '',
+    transactionType: Number(amount.Credit) == 0 ? 'inflow' : 'outflow',
+  });
+
+  // const [values, setValues] = useState({
+  //   date: '',
+  //   amount: '',
+  //   accountType: {
+  //     category: '',
+  //     type: '',
+  //   },
+  //   description: '',
+  //   paymentType: '',
+  //   transactionType: 'inflow',
+  //   customerName: '',
+  //   customerId: '',
+  // });
+
+  const handleAccountSelect = (name) => (e) => {
+    switch (name) {
+      case 'credit':
+        setValues({
+          ...values,
+          creditAccountType: {
+            ...values.creditAccountType,
+            name: e.accountName,
+            id: e.chartOfAccountsId,
+            code: e.accountCode,
+          },
+          debitAccountType: {
+            ...values.debitAccountType,
+            code: '1000-1',
+            id: '614d804571e0570016d6b87b',
+            name: 'First Bank',
+          },
+        });
+        break;
+      case 'debit':
+        setValues({
+          ...values,
+          debitAccountType: {
+            ...values.debitAccountType,
+            name: e.accountName,
+            id: e.chartOfAccountsId,
+            code: e.accountCode,
+          },
+          creditAccountType: {
+            ...values.creditAccountType,
+            code: '1000-1',
+            id: '614d804571e0570016d6b87b',
+            name: 'First Bank',
+          },
+        });
+        break;
+    }
+  };
+
+  console.log({ values });
+  const handleInputChange = (name) => (e) => {
+    let { value } = e.target;
+    switch (name) {
+      case 'amount':
+        setValues({
+          ...values,
+          [name]: Number(value.replace(/,/g, '')).toLocaleString(),
+        });
+        break;
+      case 'customerName':
+        setSearchKeyword(!searchKeyword);
+        setValues({ ...values, [name]: value });
+        break;
+      default:
+        setValues({ ...values, [name]: value });
+        break;
+    }
+  };
+
+  const handleDateChange = (val) => {
+    setValues({ ...values, date: val });
+  };
+
+  const handleSelectChange = (e) => {
+    let { value } = e.target;
+    setValues({ ...values, paymentType: value });
+  };
+
+  const handleChange = (e) => {
+    let { value } = e.target;
+    const type = accountType
+      .filter((item) => item.children.includes(value))
+      .map((item) => item.title)
+      .join();
+    setValues({
+      ...values,
+      accountType: { ...values.accountType, type, category: value },
+    });
+  };
+
+  const [debit, setDebit] = useState([]);
+
+  useEffect(() => {
+    authClient
+      .get(
+        `/api/v1/accounting/charts/accounts/fetch/accounts?transaction=inflow&transactionType=debit`,
+      )
+      .then(({ data }) => setDebit(data?.data))
+      .catch((e) => console.log(e));
+  }, []);
+
+  const handleSubmit = () => {
+    const {
+      date,
+      paymentType,
+      description,
+      transactionType,
+      recipient,
+      creditAccountType,
+      debitAccountType,
+    } = values;
+    authClient
+      .post('/api/v1/accounting/transaction', {
+        amount: values?.amount.replace(/\,/g, ''),
+        paymentType,
+        description,
+        date,
+        transactionType,
+        recipient,
+        creditAccountType,
+        debitAccountType,
+      })
+      .then((res) => {
+        if (res.status === 201) {
+          setSuccess(true);
+          setReload(!reload);
+          setTimeout(() => {
+            handleDialogClose();
+          }, 6500);
+        }
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const [searchVendor, setSearchVendor] = useState([]);
+  const [searchCustomer, setSearchCustomer] = useState([]);
+
+  useEffect(() => {
+    const handler =
+      values.customerName &&
+      setTimeout(() => {
+        authClient
+          .get(
+            `/api/v1/accounting/vendor/search?keyword=${values.customerName}`,
+          )
+          .then(({ data }) => {
+            setSearchVendor(data?.data);
+          });
+      }, 1500);
+    return () => clearTimeout(handler);
+  }, [searchKeyword]);
+
+  useEffect(() => {
+    const handler =
+      values.customerName &&
+      setTimeout(() => {
+        authClient
+          .get(
+            `/api/v1/accounting/customer/search?keyword=${values.customerName}`,
+          )
+          .then(({ data }) => {
+            setSearchCustomer(data?.data?.customer);
+          });
+      }, 1500);
+    return () => clearTimeout(handler);
+  }, [searchKeyword]);
+
+  const handleListItem = (id, name) => {
+    setSearchKeyword(!searchKeyword);
+    setValues({
+      ...values,
+      recipient: {
+        type: 'customer',
+        name,
+        id,
+      },
+    });
+  };
+
+  return (
+    <Dialog
+      onClose={handleDialogClose}
+      aria-labelledby="customized-dialog-title"
+      open={open}
+      classes={{
+        container: classes.dialogContainer,
+        paper: classes.dialogPaper,
+      }}
+      disableBackdropClick>
+      {success ? (
+        <div className={classes.dialogSuccess}>
+          <DialogTitle
+            id="customized-dialog-title"
+            onClose={handleDialogClose}></DialogTitle>
+          <Lottie
+            options={defaultOptions}
+            height={200}
+            width={200}
+            isClickToPauseDisabled={true}
+          />
+          <DialogTypography>Successful</DialogTypography>
+        </div>
+      ) : (
+        <>
+          <DialogTitle id="customized-dialog-title" onClose={handleDialogClose}>
+            Add Transaction
+          </DialogTitle>
+          <DialogContent dividers>
+            <>
+              <div
+                style={{
+                  display: matchesXs ? 'block' : 'grid',
+                  gridTemplateColumns: 'repeat(2,1fr)',
+                  gap: '1rem 2rem',
+                }}>
+                <div className={classes.formFieldWrapper}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Date:
+                    <span className={classes.required}>*</span>
+                  </TypographyH5>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <MaterialDatePicker
+                    fontItalic
+                    notched
+                    value={values.date}
+                    handleDateChange={handleDateChange}
+                  />
+                </div>
+                <div className={classes.formFieldWrapper}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Customer/Vendor:
+                  </TypographyH5>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <InputForEmployeePage
+                    style={{
+                      fontStyle: 'italic',
+                    }}
+                    placeholder="Search Customer"
+                    fullWidth
+                    value={values.recipient.name}
+                    size="small"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment
+                          classes={{ root: classes.inputAdornment }}
+                          position="start">
+                          <SearchOutlined />
+                        </InputAdornment>
+                      ),
+                    }}
+                    onChange={handleInputChange('customerName')}
+                  />
+                  {searchKeyword && (
+                    <Paper
+                      style={{
+                        position: 'absolute',
+                        zIndex: 1,
+                        minWidth: matchesXs ? '68%' : '49%',
+                      }}>
+                      <ul
+                        style={{
+                          listStyleType: 'none',
+                          padding: 0,
+                          margin: 0,
+                        }}>
+                        {[...searchVendor, ...searchCustomer]?.map(
+                          (item, i) => (
+                            <li
+                              key={i}
+                              style={{
+                                cursor: 'pointer',
+                              }}
+                              onClick={() =>
+                                handleListItem(
+                                  item?.customerId || item?.vendorId,
+                                  item?.name,
+                                )
+                              }>
+                              <TypographyH5
+                                style={{
+                                  padding: '0.7rem 2rem',
+                                  borderBottom: '1px solid #9e9e9ead',
+                                  textTransform: 'capitalize',
+                                }}>
+                                {item?.name}
+                              </TypographyH5>
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    </Paper>
+                  )}
+                </div>
+                <div className={classes.formFieldWrapper}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Amount Paid:
+                  </TypographyH5>
+                  <span className={classes.required}>*</span>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <InputField
+                    placeholder="Enter amount"
+                    fullWidth
+                    naira={'NGN'}
+                    size="small"
+                    value={values.amount}
+                    onChange={handleInputChange('amount')}
+                  />
+                </div>
+
+                <div className={classes.formFieldWrapper}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Transaction Type:
+                  </TypographyH5>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <Select
+                    value={values.paymentType}
+                    fullWidth
+                    size="small"
+                    variant="outlined"
+                    classes={{
+                      select: classes.select,
+                    }}
+                    onChange={handleSelectChange}
+                    className={classes.selectInput}>
+                    <div
+                      style={{
+                        textAlign: 'center',
+                        borderBottom: '1px solid #eee',
+                        padding: '0 0 .5rem',
+                      }}>
+                      <TypographyBold>Payment Types</TypographyBold>
+                    </div>
+                    {paymentType.map((child, idx) => (
+                      <MenuItem
+                        style={{ padding: '.2rem 2rem' }}
+                        key={idx}
+                        value={child}>
+                        <TypographyH5 style={{ fontSize: 15 }}>
+                          {child}
+                        </TypographyH5>
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+                <div
+                  className={classes.formFieldWrapper}
+                  style={{ alignItems: 'flex-start' }}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Account:
+                  </TypographyH5>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <AccountSelect
+                    value={
+                      amount.Debit == '0'
+                        ? values.debitAccountType.name
+                        : values.creditAccountType.name
+                    }
+                    handleItemClose={handleAccountSelect(
+                      amount.Debit == '0' ? 'debit' : 'credit',
+                    )}
+                    menuItem={debit}
+                    account
+                    fullWidth
+                  />
+                </div>
+                <div
+                  className={classes.formFieldWrapper}
+                  style={{ alignItems: 'flex-start' }}>
+                  <TypographyH5 variant="h6" className={classes.formTitle}>
+                    Description:
+                  </TypographyH5>
+                </div>
+                <div style={{ gridColumn: '2 / 6' }}>
+                  <InputForEmployeePage
+                    placeholder="Enter description"
+                    fullWidth
+                    size="small"
+                    value={values.description}
+                    multiline
+                    onChange={handleInputChange('description')}
+                    rows={3}
+                  />
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  margin: '1.2rem 0 0px 5rem',
+                }}>
+                <PrimaryButton
+                  style={{ margin: '.5rem' }}
+                  onClick={handleSubmit}>
+                  Save
+                </PrimaryButton>
+                <DefaultButton
+                  style={{ margin: '.5rem' }}
+                  onClick={handleDialogClose}>
+                  Cancel
+                </DefaultButton>
+              </div>
+            </>
+          </DialogContent>
+        </>
+      )}
+    </Dialog>
+  );
+};
+
+export default AddTransactionDialog;

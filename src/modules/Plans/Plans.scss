@@ -1,0 +1,70 @@
+@import '../../lib/assets/styles/var';
+
+.plan-btn {
+  background-color: #fff !important;
+  border: 1px solid #979797 !important;
+  border-radius: 4px !important;
+  color: #242e4c !important;
+  font-family: 'OpenSansSemiBold' !important;
+  text-transform: none;
+  &:hover {
+    background-color: #fff !important;
+  }
+}
+
+.plan-btn-2 {
+  background-color: #fff !important;
+  border: 1px solid #979797 !important;
+  border-radius: 4px !important;
+  color: #242e4c !important;
+  font-family: 'OpenSansSemiBold' !important;
+  text-transform: none;
+  margin: 3.38rem 0rem !important;
+  &:hover {
+    background-color: #fff !important;
+  }
+  @media (max-width: 768px) {
+    margin-top: 1.5rem !important;
+  }
+  @media (max-width: 650px) {
+    margin-top: 2rem !important;
+  }
+}
+
+.list_1 {
+  padding: 2rem;
+  margin: 0rem;
+  text-align: initial;
+  @media (max-width: 768px) {
+    padding: 1rem 2rem;
+  }
+}
+
+.list_2 {
+  padding: 3.5rem 2rem 2rem;
+  margin: 0rem;
+  text-align: initial;
+  @media (max-width: 768px) {
+    padding: 2rem 2rem;
+  }
+}
+
+.list_3 {
+  padding: 2rem 2rem 2rem;
+  margin: 0rem;
+  text-align: initial;
+  @media (max-width: 768px) {
+    padding: 2rem 2rem;
+  }
+}
+
+.MuiSwitch-track {
+  background-color: #5c83ee;
+  opacity: 1;
+}
+.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  opacity: 1;
+}
+.MuiSwitch-colorPrimary.Mui-checked {
+  color: #fff;
+}

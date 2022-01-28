@@ -1,0 +1,17 @@
+@import '../../assets/styles/var';
+
+.body-card {
+  background: #fbfbfe;
+  // height: 100vh;
+  // width: 100vw;
+
+  .card {
+    // width: 10%;
+    background: #fff;
+    position: absolute;
+    margin: 63px 32%;
+
+    border-radius: 11.1682px;
+    box-shadow: 19.3582px 27.5482px 45.4173px -15.6355px rgba(126, 144, 199, 0.649853);
+  }
+}
